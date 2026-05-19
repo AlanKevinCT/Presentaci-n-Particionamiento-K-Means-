@@ -25,6 +25,20 @@
     "href": "index.html#diagramas-de-funcionamiento",
     "title": "Fundamentos de K-Means",
     "section": "3. Diagramas de Funcionamiento",
-    "text": "3. Diagramas de Funcionamiento\nUtilizamos Mermaid para representar el flujo lógico:\ngraph TD A[Inicio: Datos sin etiqueta] –&gt; B[Elegir K centroides iniciales] B –&gt; C[Asignar puntos al centroide más cercano] C –&gt; D[Calcular nueva media -Centroide-] D –&gt; E{¿Cambio en centroides?} E – Sí –&gt; C E – No –&gt; F[Fin: Clusters Convergentes]"
+    "text": "3. Diagramas de Funcionamiento"
+  },
+  {
+    "objectID": "index.html#caso-de-aplicación",
+    "href": "index.html#caso-de-aplicación",
+    "title": "Fundamentos de K-Means",
+    "section": "4. Caso de Aplicación",
+    "text": "4. Caso de Aplicación"
+  },
+  {
+    "objectID": "index.html#preguntas-de-reflexión",
+    "href": "index.html#preguntas-de-reflexión",
+    "title": "Fundamentos de K-Means",
+    "section": "5. Preguntas de Reflexión",
+    "text": "5. Preguntas de Reflexión"
   }
 ]
