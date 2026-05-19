@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Fundamentos de K-Means",
+    "section": "",
+    "text": "El particionamiento es una técnica de aprendizaje no supervisado. K-Means es un algoritmo iterativo que agrupa datos minimizando la distancia entre los puntos y los centroides de sus respectivos grupos.\n\n\nEl algoritmo busca minimizar la inercia o Suma de Errores al Cuadrado (SSE):\n\\[J = \\sum_{j=1}^{k} \\sum_{x \\in C_j} \\|x - \\mu_j\\|^2\\]\nDonde \\(\\mu_j\\) es el centroide del cluster \\(C_j\\). La distancia utilizada por defecto es la Euclídea:\n\\[d(x, y) = \\sqrt{\\sum_{i=1}^{n} (x_i - y_i)^2}\\]"
+  },
+  {
+    "objectID": "index.html#introducción-teórica",
+    "href": "index.html#introducción-teórica",
+    "title": "Fundamentos de K-Means",
+    "section": "",
+    "text": "El particionamiento es una técnica de aprendizaje no supervisado. K-Means es un algoritmo iterativo que agrupa datos minimizando la distancia entre los puntos y los centroides de sus respectivos grupos.\n\n\nEl algoritmo busca minimizar la inercia o Suma de Errores al Cuadrado (SSE):\n\\[J = \\sum_{j=1}^{k} \\sum_{x \\in C_j} \\|x - \\mu_j\\|^2\\]\nDonde \\(\\mu_j\\) es el centroide del cluster \\(C_j\\). La distancia utilizada por defecto es la Euclídea:\n\\[d(x, y) = \\sqrt{\\sum_{i=1}^{n} (x_i - y_i)^2}\\]"
+  },
+  {
+    "objectID": "index.html#fórmulas-y-algoritmos",
+    "href": "index.html#fórmulas-y-algoritmos",
+    "title": "Fundamentos de K-Means",
+    "section": "2. Fórmulas y Algoritmos",
+    "text": "2. Fórmulas y Algoritmos\nEl proceso sigue estos pasos lógicos: 1. Selección de \\(k\\) centroides iniciales. 2. Asignación de cada observación al centroide más cercano. 3. Actualización de centroides mediante la media: \\(\\mu_j = \\frac{1}{|C_j|} \\sum_{x \\in C_j} x\\)."
+  },
+  {
+    "objectID": "index.html#diagramas-de-funcionamiento",
+    "href": "index.html#diagramas-de-funcionamiento",
+    "title": "Fundamentos de K-Means",
+    "section": "3. Diagramas de Funcionamiento",
+    "text": "3. Diagramas de Funcionamiento\nUtilizamos Mermaid para representar el flujo lógico:\ngraph TD A[Inicio: Datos sin etiqueta] –&gt; B[Elegir K centroides iniciales] B –&gt; C[Asignar puntos al centroide más cercano] C –&gt; D[Calcular nueva media -Centroide-] D –&gt; E{¿Cambio en centroides?} E – Sí –&gt; C E – No –&gt; F[Fin: Clusters Convergentes]"
+  }
+]

@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Particionamiento K-Means"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Guía Técnica
+
+format:
+  html:
+    theme: journal
+    toc: true
+  pdf:
+    documentclass: scrartcl
+    number-sections: true
+    colorlinks: true
