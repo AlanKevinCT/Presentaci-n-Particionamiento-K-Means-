@@ -12,15 +12,16 @@ Antes de compilar, asegúrate de tener instalado en tu computadora:
 
 ## Compilar y Generar documentos
 Para generar simultáneamente la página web interactiva (HTML) y el documento técnico formal (PDF), abre una terminal en la raíz de esta carpeta y ejecuta:
-```bash
-quarto render
+   ```bash
+   quarto render
+   ```
 
 ## Limpieza y Re-renderizado
 Si realizas cambios en el diseño, las fórmulas o el código de Python y notas que no se reflejan, o si la compilación se traba, debes limpiar la caché acumulada de Quarto antes de volver a compilar. Ejecuta estos comandos en tu terminal:
-```bash
-quarto clean
-quarto render
-
+   ```bash
+   quarto clean
+   quarto render
+   ```
 
 ## Esta es la presentación donde cada quién ira agregando su parte para exponer.
 https://canva.link/0owwrafy1efrszc 
