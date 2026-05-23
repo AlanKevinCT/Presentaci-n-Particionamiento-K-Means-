@@ -25,4 +25,214 @@ El proceso sigue estos pasos lógicos:
 
 ## 4. Caso de Aplicación
 
-## 5. Preguntas de Reflexión
+### Escenario: Segmentación de Clientes en una Cadena de Retail
+
+#### Descripción del Problema
+
+Una cadena de supermercados mexicana cuenta con una base de datos de
+**5,000 clientes** con las siguientes variables registradas:
+
+| Variable | Descripción |
+|---|---|
+| `ingreso_anual` | Ingreso anual estimado del cliente (MXN) |
+| `frecuencia_compra` | Número de visitas por mes |
+| `ticket_promedio` | Gasto promedio por visita (MXN) |
+| `antiguedad_meses` | Meses como cliente activo |
+
+El área de marketing necesita diseñar **campañas personalizadas** pero
+no sabe cuántos perfiles distintos de clientes existen ni cuáles son
+sus características. No hay etiquetas previas — es un problema de
+**aprendizaje no supervisado**, y K-Means es la solución óptima porque:
+
+- Los datos son **continuos** y se puede calcular una media por grupo.
+- Se busca una **partición plana** (no jerárquica) para acciones de negocio concretas.
+- La escala del problema (miles de registros) es computacionalmente manejable.
+
+---
+
+#### Preprocesamiento: Normalización de Variables
+
+Antes de aplicar K-Means se normalizan las variables con
+**escalamiento estándar (z-score)**, ya que las unidades son
+heterogéneas (pesos vs. frecuencias vs. meses):
+
+$$z_i = \frac{x_i - \mu}{\sigma}$$
+
+```{python}
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings('ignore')
+
+# Simulación del dataset (3 perfiles latentes)
+np.random.seed(42)
+n = 500
+
+df = pd.DataFrame({
+    "ingreso_anual": np.concatenate([
+        np.random.normal(25000, 5000, 150),    # Perfil básico
+        np.random.normal(60000, 8000, 200),    # Perfil medio
+        np.random.normal(110000, 15000, 150)   # Perfil premium
+    ]),
+    "frecuencia_compra": np.concatenate([
+        np.random.normal(2, 0.5, 150),
+        np.random.normal(5, 1.0, 200),
+        np.random.normal(8, 1.5, 150)
+    ]),
+    "ticket_promedio": np.concatenate([
+        np.random.normal(150, 30, 150),
+        np.random.normal(400, 60, 200),
+        np.random.normal(900, 120, 150)
+    ]),
+    "antiguedad_meses": np.random.randint(1, 60, n)
+})
+
+scaler = StandardScaler()
+X = scaler.fit_transform(df)
+print("Dataset listo:", df.shape)
+print(df.describe().round(0))
+```
+
+---
+
+#### Selección de K: Método del Codo
+
+```{python}
+inercias = []
+K_range = range(1, 11)
+
+for k in K_range:
+    km = KMeans(n_clusters=k, random_state=42, n_init=10)
+    km.fit(X)
+    inercias.append(km.inertia_)
+
+plt.figure(figsize=(8, 4))
+plt.plot(K_range, inercias, marker='o', color='steelblue',
+         linewidth=2, markersize=7)
+plt.axvline(x=3, color='crimson', linestyle='--',
+            linewidth=1.5, label='K óptimo = 3')
+plt.xlabel("Número de Clusters (K)", fontsize=12)
+plt.ylabel("Inercia (SSE)", fontsize=12)
+plt.title("Método del Codo — Segmentación de Clientes Retail", fontsize=13)
+plt.legend(fontsize=11)
+plt.tight_layout()
+plt.show()
+```
+
+El quiebre (codo) se ubica claramente en **K = 3**, indicando tres
+perfiles de cliente diferenciados.
+
+---
+
+#### Modelo Final con K = 3
+
+```{python}
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+df["cluster"] = kmeans.fit_predict(X)
+
+# Etiquetas interpretables según media de ingreso por cluster
+medias = df.groupby("cluster")["ingreso_anual"].mean().sort_values()
+mapa_etiquetas = {
+    medias.index[0]: "🔴 Cliente Básico",
+    medias.index[1]: "🔵 Cliente Frecuente",
+    medias.index[2]: "🟢 Cliente Premium"
+}
+df["perfil"] = df["cluster"].map(mapa_etiquetas)
+
+# Resumen estadístico por perfil
+resumen = df.groupby("perfil")[
+    ["ingreso_anual", "frecuencia_compra", "ticket_promedio"]
+].mean().round(0)
+print(resumen)
+```
+
+```{python}
+# Visualización: Ingreso Anual vs Ticket Promedio
+colores = {
+    "🔴 Cliente Básico":    "#E74C3C",
+    "🔵 Cliente Frecuente": "#3498DB",
+    "🟢 Cliente Premium":   "#2ECC71"
+}
+
+fig, ax = plt.subplots(figsize=(9, 5))
+
+for perfil, grupo in df.groupby("perfil"):
+    ax.scatter(grupo["ingreso_anual"], grupo["ticket_promedio"],
+               label=perfil, alpha=0.55,
+               color=colores[perfil], s=40, edgecolors='none')
+
+# Centroides des-normalizados
+centroides_orig = scaler.inverse_transform(kmeans.cluster_centers_)
+ax.scatter(centroides_orig[:, 0], centroides_orig[:, 2],
+           s=250, marker='X', color='black', zorder=5,
+           label='Centroides', linewidths=1.5)
+
+ax.set_xlabel("Ingreso Anual (MXN)", fontsize=12)
+ax.set_ylabel("Ticket Promedio por Visita (MXN)", fontsize=12)
+ax.set_title("Segmentación de Clientes con K-Means (K=3)", fontsize=13)
+ax.legend(fontsize=10)
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+#### Interpretación de Resultados y Acción de Negocio
+
+| Perfil | Ingreso Anual | Visitas/Mes | Ticket Promedio | Estrategia de Marketing |
+|---|---|---|---|---|
+| 🔴 Cliente Básico | ~$25,000 | ~2 | ~$150 | Promociones de precio y descuentos |
+| 🔵 Cliente Frecuente | ~$60,000 | ~5 | ~$400 | Programa de puntos y lealtad |
+| 🟢 Cliente Premium | ~$110,000 | ~8 | ~$900 | Experiencias exclusivas y servicio VIP |
+
+K-Means permitió descubrir estos tres segmentos **sin ninguna etiqueta
+previa**, algo imposible de lograr con algoritmos supervisados. El
+resultado es directamente accionable para el equipo de marketing.
+
+---
+
+## 5. Preguntas de Reflexión {#preguntas-reflexion}
+
+Las siguientes preguntas están diseñadas para dinamizar el debate
+técnico durante los últimos 15 minutos de la sesión:
+
+::: {.callout-important}
+### Pregunta 1 — Sobre la elección de K
+
+**Si el método del codo no muestra un quiebre claro y la curva
+decrece de forma suave, ¿cómo decides cuántos clusters usar?
+¿Cambiarías el criterio de evaluación o cambiarías el algoritmo?**
+
+*Pista:* Consideren métricas alternativas como el **índice de
+silueta** (que mide cohesión y separación) o el **criterio BIC**
+para modelos de mezclas gaussianas (GMM) como alternativa a K-Means.
+:::
+
+::: {.callout-important}
+### Pregunta 2 — Sobre sensibilidad a outliers
+
+**Imaginen que el 2% de sus clientes tienen ingresos 10 veces
+mayores al resto del grupo. ¿Qué le pasaría exactamente a los
+centroides y qué harían para resolverlo sin eliminar esos registros?**
+
+*Pista:* Comparen **K-Means** (usa la media, muy sensible a valores
+extremos) con **K-Medoids** (usa la mediana, más robusto). ¿Cuándo
+vale la pena el costo computacional extra de K-Medoids?
+:::
+
+::: {.callout-important}
+### Pregunta 3 — Sobre los supuestos del algoritmo
+
+**K-Means asume que los clusters son esféricos y de tamaño similar.
+Si sus datos forman clusters con formas irregulares o densidades muy
+distintas, ¿seguirían usando K-Means? ¿Qué alternativa propondrían
+y por qué?**
+
+*Pista:* **DBSCAN** resuelve exactamente esta
+limitación al definir clusters por densidad, sin asumir forma ni
+cantidad. Conecten la respuesta con lo que verán en esa sesión.
+:::
+

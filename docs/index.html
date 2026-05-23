@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.9.37">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -39,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap-d390f6b1bb233dafbd59a397b5af9ca7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -146,8 +181,11 @@ window.Quarto = {
   </ul></li>
   <li><a href="#fórmulas-y-algoritmos" id="toc-fórmulas-y-algoritmos" class="nav-link" data-scroll-target="#fórmulas-y-algoritmos">2. Fórmulas y Algoritmos</a></li>
   <li><a href="#diagramas-de-funcionamiento" id="toc-diagramas-de-funcionamiento" class="nav-link" data-scroll-target="#diagramas-de-funcionamiento">3. Diagramas de Funcionamiento</a></li>
-  <li><a href="#caso-de-aplicación" id="toc-caso-de-aplicación" class="nav-link" data-scroll-target="#caso-de-aplicación">4. Caso de Aplicación</a></li>
-  <li><a href="#preguntas-de-reflexión" id="toc-preguntas-de-reflexión" class="nav-link" data-scroll-target="#preguntas-de-reflexión">5. Preguntas de Reflexión</a></li>
+  <li><a href="#caso-de-aplicación" id="toc-caso-de-aplicación" class="nav-link" data-scroll-target="#caso-de-aplicación">4. Caso de Aplicación</a>
+  <ul class="collapse">
+  <li><a href="#escenario-segmentación-de-clientes-en-una-cadena-de-retail" id="toc-escenario-segmentación-de-clientes-en-una-cadena-de-retail" class="nav-link" data-scroll-target="#escenario-segmentación-de-clientes-en-una-cadena-de-retail">Escenario: Segmentación de Clientes en una Cadena de Retail</a></li>
+  </ul></li>
+  <li><a href="#preguntas-reflexion" id="toc-preguntas-reflexion" class="nav-link" data-scroll-target="#preguntas-reflexion">5. Preguntas de Reflexión</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
@@ -193,9 +231,291 @@ window.Quarto = {
 </section>
 <section id="caso-de-aplicación" class="level2">
 <h2 class="anchored" data-anchor-id="caso-de-aplicación">4. Caso de Aplicación</h2>
+<section id="escenario-segmentación-de-clientes-en-una-cadena-de-retail" class="level3">
+<h3 class="anchored" data-anchor-id="escenario-segmentación-de-clientes-en-una-cadena-de-retail">Escenario: Segmentación de Clientes en una Cadena de Retail</h3>
+<section id="descripción-del-problema" class="level4">
+<h4 class="anchored" data-anchor-id="descripción-del-problema">Descripción del Problema</h4>
+<p>Una cadena de supermercados mexicana cuenta con una base de datos de <strong>5,000 clientes</strong> con las siguientes variables registradas:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ingreso_anual</code></td>
+<td>Ingreso anual estimado del cliente (MXN)</td>
+</tr>
+<tr class="even">
+<td><code>frecuencia_compra</code></td>
+<td>Número de visitas por mes</td>
+</tr>
+<tr class="odd">
+<td><code>ticket_promedio</code></td>
+<td>Gasto promedio por visita (MXN)</td>
+</tr>
+<tr class="even">
+<td><code>antiguedad_meses</code></td>
+<td>Meses como cliente activo</td>
+</tr>
+</tbody>
+</table>
+<p>El área de marketing necesita diseñar <strong>campañas personalizadas</strong> pero no sabe cuántos perfiles distintos de clientes existen ni cuáles son sus características. No hay etiquetas previas — es un problema de <strong>aprendizaje no supervisado</strong>, y K-Means es la solución óptima porque:</p>
+<ul>
+<li>Los datos son <strong>continuos</strong> y se puede calcular una media por grupo.</li>
+<li>Se busca una <strong>partición plana</strong> (no jerárquica) para acciones de negocio concretas.</li>
+<li>La escala del problema (miles de registros) es computacionalmente manejable.</li>
+</ul>
+<hr>
 </section>
-<section id="preguntas-de-reflexión" class="level2">
-<h2 class="anchored" data-anchor-id="preguntas-de-reflexión">5. Preguntas de Reflexión</h2>
+<section id="preprocesamiento-normalización-de-variables" class="level4">
+<h4 class="anchored" data-anchor-id="preprocesamiento-normalización-de-variables">Preprocesamiento: Normalización de Variables</h4>
+<p>Antes de aplicar K-Means se normalizan las variables con <strong>escalamiento estándar (z-score)</strong>, ya que las unidades son heterogéneas (pesos vs.&nbsp;frecuencias vs.&nbsp;meses):</p>
+<p><span class="math display">\[z_i = \frac{x_i - \mu}{\sigma}\]</span></p>
+<div id="c48aa5c1" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulación del dataset (3 perfiles latentes)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">500</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ingreso_anual"</span>: np.concatenate([</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">25000</span>, <span class="dv">5000</span>, <span class="dv">150</span>),    <span class="co"># Perfil básico</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">60000</span>, <span class="dv">8000</span>, <span class="dv">200</span>),    <span class="co"># Perfil medio</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">110000</span>, <span class="dv">15000</span>, <span class="dv">150</span>)   <span class="co"># Perfil premium</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    ]),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"frecuencia_compra"</span>: np.concatenate([</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">2</span>, <span class="fl">0.5</span>, <span class="dv">150</span>),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">5</span>, <span class="fl">1.0</span>, <span class="dv">200</span>),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">8</span>, <span class="fl">1.5</span>, <span class="dv">150</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    ]),</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ticket_promedio"</span>: np.concatenate([</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">150</span>, <span class="dv">30</span>, <span class="dv">150</span>),</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">400</span>, <span class="dv">60</span>, <span class="dv">200</span>),</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        np.random.normal(<span class="dv">900</span>, <span class="dv">120</span>, <span class="dv">150</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    ]),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"antiguedad_meses"</span>: np.random.randint(<span class="dv">1</span>, <span class="dv">60</span>, n)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scaler.fit_transform(df)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Dataset listo:"</span>, df.shape)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.describe().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Dataset listo: (500, 4)
+       ingreso_anual  frecuencia_compra  ticket_promedio  antiguedad_meses
+count          500.0              500.0            500.0             500.0
+mean         64677.0                5.0            483.0              31.0
+std          34932.0                3.0            314.0              17.0
+min          11901.0                1.0             63.0               1.0
+25%          29066.0                2.0            183.0              17.0
+50%          60715.0                5.0            401.0              30.0
+75%          95025.0                7.0            798.0              46.0
+max         156183.0               12.0           1212.0              59.0</code></pre>
+</div>
+</div>
+<hr>
+</section>
+<section id="selección-de-k-método-del-codo" class="level4">
+<h4 class="anchored" data-anchor-id="selección-de-k-método-del-codo">Selección de K: Método del Codo</h4>
+<div id="9e073d4a" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>inercias <span class="op">=</span> []</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>K_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> K_range:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    km.fit(X)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    inercias.append(km.inertia_)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plt.plot(K_range, inercias, marker<span class="op">=</span><span class="st">'o'</span>, color<span class="op">=</span><span class="st">'steelblue'</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>         linewidth<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.axvline(x<span class="op">=</span><span class="dv">3</span>, color<span class="op">=</span><span class="st">'crimson'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>            linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="st">'K óptimo = 3'</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Número de Clusters (K)"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Inercia (SSE)"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Método del Codo — Segmentación de Clientes Retail"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>plt.legend(fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-3-output-1.png" width="759" height="374" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El quiebre (codo) se ubica claramente en <strong>K = 3</strong>, indicando tres perfiles de cliente diferenciados.</p>
+<hr>
+</section>
+<section id="modelo-final-con-k-3" class="level4">
+<h4 class="anchored" data-anchor-id="modelo-final-con-k-3">Modelo Final con K = 3</h4>
+<div id="594aeda2" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"cluster"</span>] <span class="op">=</span> kmeans.fit_predict(X)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Etiquetas interpretables según media de ingreso por cluster</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>medias <span class="op">=</span> df.groupby(<span class="st">"cluster"</span>)[<span class="st">"ingreso_anual"</span>].mean().sort_values()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>mapa_etiquetas <span class="op">=</span> {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    medias.index[<span class="dv">0</span>]: <span class="st">"🔴 Cliente Básico"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    medias.index[<span class="dv">1</span>]: <span class="st">"🔵 Cliente Frecuente"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    medias.index[<span class="dv">2</span>]: <span class="st">"🟢 Cliente Premium"</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"perfil"</span>] <span class="op">=</span> df[<span class="st">"cluster"</span>].<span class="bu">map</span>(mapa_etiquetas)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Resumen estadístico por perfil</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>resumen <span class="op">=</span> df.groupby(<span class="st">"perfil"</span>)[</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"ingreso_anual"</span>, <span class="st">"frecuencia_compra"</span>, <span class="st">"ticket_promedio"</span>]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>].mean().<span class="bu">round</span>(<span class="dv">0</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resumen)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     ingreso_anual  frecuencia_compra  ticket_promedio
+perfil                                                                
+🔴 Cliente Básico           43470.0                3.0            288.0
+🔵 Cliente Frecuente        46797.0                4.0            303.0
+🟢 Cliente Premium         110347.0                8.0            920.0</code></pre>
+</div>
+</div>
+<div id="675a56af" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualización: Ingreso Anual vs Ticket Promedio</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>colores <span class="op">=</span> {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"🔴 Cliente Básico"</span>:    <span class="st">"#E74C3C"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"🔵 Cliente Frecuente"</span>: <span class="st">"#3498DB"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"🟢 Cliente Premium"</span>:   <span class="st">"#2ECC71"</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">5</span>))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> perfil, grupo <span class="kw">in</span> df.groupby(<span class="st">"perfil"</span>):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    ax.scatter(grupo[<span class="st">"ingreso_anual"</span>], grupo[<span class="st">"ticket_promedio"</span>],</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>               label<span class="op">=</span>perfil, alpha<span class="op">=</span><span class="fl">0.55</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>               color<span class="op">=</span>colores[perfil], s<span class="op">=</span><span class="dv">40</span>, edgecolors<span class="op">=</span><span class="st">'none'</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Centroides des-normalizados</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>centroides_orig <span class="op">=</span> scaler.inverse_transform(kmeans.cluster_centers_)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>ax.scatter(centroides_orig[:, <span class="dv">0</span>], centroides_orig[:, <span class="dv">2</span>],</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>           s<span class="op">=</span><span class="dv">250</span>, marker<span class="op">=</span><span class="st">'X'</span>, color<span class="op">=</span><span class="st">'black'</span>, zorder<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="st">'Centroides'</span>, linewidths<span class="op">=</span><span class="fl">1.5</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Ingreso Anual (MXN)"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Ticket Promedio por Visita (MXN)"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Segmentación de Clientes con K-Means (K=3)"</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-5-output-1.png" width="852" height="471" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<hr>
+</section>
+<section id="interpretación-de-resultados-y-acción-de-negocio" class="level4">
+<h4 class="anchored" data-anchor-id="interpretación-de-resultados-y-acción-de-negocio">Interpretación de Resultados y Acción de Negocio</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Perfil</th>
+<th>Ingreso Anual</th>
+<th>Visitas/Mes</th>
+<th>Ticket Promedio</th>
+<th>Estrategia de Marketing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>🔴 Cliente Básico</td>
+<td>~$25,000</td>
+<td>~2</td>
+<td>~$150</td>
+<td>Promociones de precio y descuentos</td>
+</tr>
+<tr class="even">
+<td>🔵 Cliente Frecuente</td>
+<td>~$60,000</td>
+<td>~5</td>
+<td>~$400</td>
+<td>Programa de puntos y lealtad</td>
+</tr>
+<tr class="odd">
+<td>🟢 Cliente Premium</td>
+<td>~$110,000</td>
+<td>~8</td>
+<td>~$900</td>
+<td>Experiencias exclusivas y servicio VIP</td>
+</tr>
+</tbody>
+</table>
+<p>K-Means permitió descubrir estos tres segmentos <strong>sin ninguna etiqueta previa</strong>, algo imposible de lograr con algoritmos supervisados. El resultado es directamente accionable para el equipo de marketing.</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="preguntas-reflexion" class="level2">
+<h2 class="anchored" data-anchor-id="preguntas-reflexion">5. Preguntas de Reflexión</h2>
+<p>Las siguientes preguntas están diseñadas para dinamizar el debate técnico durante los últimos 15 minutos de la sesión:</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Pregunta 1 — Sobre la elección de K
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Si el método del codo no muestra un quiebre claro y la curva decrece de forma suave, ¿cómo decides cuántos clusters usar? ¿Cambiarías el criterio de evaluación o cambiarías el algoritmo?</strong></p>
+<p><em>Pista:</em> Consideren métricas alternativas como el <strong>índice de silueta</strong> (que mide cohesión y separación) o el <strong>criterio BIC</strong> para modelos de mezclas gaussianas (GMM) como alternativa a K-Means.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Pregunta 2 — Sobre sensibilidad a outliers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Imaginen que el 2% de sus clientes tienen ingresos 10 veces mayores al resto del grupo. ¿Qué le pasaría exactamente a los centroides y qué harían para resolverlo sin eliminar esos registros?</strong></p>
+<p><em>Pista:</em> Comparen <strong>K-Means</strong> (usa la media, muy sensible a valores extremos) con <strong>K-Medoids</strong> (usa la mediana, más robusto). ¿Cuándo vale la pena el costo computacional extra de K-Medoids?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Pregunta 3 — Sobre los supuestos del algoritmo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>K-Means asume que los clusters son esféricos y de tamaño similar. Si sus datos forman clusters con formas irregulares o densidades muy distintas, ¿seguirían usando K-Means? ¿Qué alternativa propondrían y por qué?</strong></p>
+<p><em>Pista:</em> <strong>DBSCAN</strong> resuelve exactamente esta limitación al definir clusters por densidad, sin asumir forma ni cantidad. Conecten la respuesta con lo que verán en esa sesión.</p>
+</div>
+</div>
 
 
 </section>
