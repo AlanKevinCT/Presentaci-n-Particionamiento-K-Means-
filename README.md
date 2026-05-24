@@ -22,7 +22,7 @@ Si realizas cambios en el diseño, las fórmulas o el código de Python y notas 
    quarto render
    ```
 
-## Esta es la presentación donde cada quién ira agregando su parte para exponer.
+## Esta es la presentación para exponer
 https://canva.link/0owwrafy1efrszc 
 
 ## Sitio de GitHub pages:
