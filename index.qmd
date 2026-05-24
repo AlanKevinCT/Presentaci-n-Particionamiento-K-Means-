@@ -24,6 +24,8 @@ Para comprender cómo K-Means logra agrupar la información, es indispensable de
 3. **El Centroide (Centro de Gravedad):** Es el punto de referencia de un cluster. Matemáticamente, es la media aritmética multivariada de un conjunto de puntos. No tiene que ser un dato real del conjunto, sino la coordenada promedio:
    $$\mu = \frac{1}{N} \sum_{i=1}^{N} x_i$$
 
+4. **Heurística (Optimización Local):** Cuando un problema tiene tantas combinaciones posibles que es matemáticamente imposible calcular la solución perfecta (problemas NP-Hard), se recurre a una heurística. Es un atajo algorítmico o método práctico que sacrifica la garantía de encontrar el "óptimo global" (la partición perfecta absoluta) a cambio de velocidad y eficiencia computacional. Su objetivo es encontrar una solución "suficientemente buena" (un óptimo local) en un tiempo razonable.
+
 ### La Función Objetivo: Inercia (SSE)
 Entendiendo que tenemos puntos en el espacio, distancias y centros de gravedad, podemos definir la meta matemática de K-Means. El algoritmo se plantea como un problema de optimización que busca minimizar una métrica conocida como la inercia o **Suma de Errores al Cuadrado (SSE)**.
 
