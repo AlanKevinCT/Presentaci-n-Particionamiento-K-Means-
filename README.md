@@ -9,6 +9,11 @@ Antes de compilar, asegúrate de tener instalado en tu computadora:
 2. Una distribución de LaTeX para generar el PDF. Si no tienes una, instala la versión ligera oficial de Quarto ejecutando este comando en tu terminal:
    ```bash
    quarto install tinytex
+   pip install pyyaml
+   pip install jupyter nbformat
+   pip install numpy pandas matplotlib scikit-learn scipy
+   ```
+
 
 ## Compilar y Generar documentos
 Para generar simultáneamente la página web interactiva (HTML) y el documento técnico formal (PDF), abre una terminal en la raíz de esta carpeta y ejecuta:
