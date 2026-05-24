@@ -1,7 +1,7 @@
 ---
 title: "Fundamentos de K-Means"
 subtitle: "Equipo 1 - Análisis y Minería de Datos"
-author: "Alan Kevin Cano Tenorio, Integrante 2, Integrante 3, Oscar Vazquez Rincon"
+author: "Alan Kevin Cano Tenorio, Maximiliano Lechuga Hervert, Integrante 3, Oscar Vazquez Rincon"
 date: last-modified
 ---
 
@@ -67,6 +67,80 @@ Para resolverlo en la práctica, K-Means no busca la solución perfecta de inmed
 
 ## 3. Diagramas de Funcionamiento
 
+El algoritmo **K-Means** sigue un proceso iterativo compuesto por tres etapas principales:
+
+#### 1. Inicialización
+- Se elige el número de clusters $K$ de forma previa.
+- Se colocan $K$ centroides de manera **aleatoria** dentro del espacio de los datos (o usando métodos como *K-Means++* para mayor estabilidad).
+
+#### 2. Asignación
+- Cada punto del dataset se asigna al centroide **más cercano**.
+- La distancia se mide generalmente con la distancia **Euclidiana**:
+
+$$d(x, \mu_k) = \sqrt{\sum_{j=1}^{p}(x_j - \mu_{kj})^2}$$
+
+- Donde $x$ es un punto, $\mu_k$ es el centroide del cluster $k$, y $p$ es el número de dimensiones.
+
+#### 3. Actualización
+- Una vez asignados todos los puntos, se **recalcula** la posición de cada centroide como el promedio de todos los puntos que pertenecen a ese cluster:
+
+$$\mu_k = \frac{1}{|C_k|} \sum_{x_i \in C_k} x_i$$
+
+#### 4. Convergencia
+- Los pasos 2 y 3 se repiten hasta que:
+  - Los centroides **ya no cambian** de posición, o
+  - Se alcanza un número **máximo de iteraciones**.
+
+> **Resumen del flujo:**
+>
+> `Inicio` → `Elegir K` → `Inicializar centroides` → `Asignar puntos` → `Actualizar centroides` →
+> ¿Convergió? → **No:** volver a asignar | **Sí:** `Fin`
+
+---
+
+### Método del Codo para elegir $K$ óptima
+
+El **Método del Codo** consiste en ejecutar K-Means para diferentes valores de $K$ y medir la **inercia** (también llamada WCSS: *Within-Cluster Sum of Squares*), que representa qué tan compactos son los clusters:
+
+$$\text{Inercia} = \sum_{k=1}^{K} \sum_{x_i \in C_k} ||x_i - \mu_k||^2$$
+
+A medida que $K$ aumenta, la inercia **siempre disminuye**. El punto óptimo es donde la reducción empieza a ser marginal, formando un **"codo"** en la gráfica.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
+
+# --- Generar datos de ejemplo ---
+# Reemplaza esto con tu propio dataset: X = df[['col1', 'col2']].values
+X, _ = make_blobs(n_samples=300, centers=4, cluster_std=0.8, random_state=42)
+
+# --- Calcular inercia para distintos valores de K ---
+inercia = []
+rango_k = range(1, 11)  # Probar K de 1 a 10
+
+for k in rango_k:
+    modelo = KMeans(n_clusters=k, random_state=42, n_init=10)
+    modelo.fit(X)
+    inercia.append(modelo.inertia_)
+
+# --- Graficar el Método del Codo ---
+plt.figure(figsize=(8, 5))
+plt.plot(rango_k, inercia, marker='o', color='royalblue', linewidth=2,
+         markersize=8, markerfacecolor='tomato')
+plt.title('Método del Codo para elegir $K$ óptima', fontsize=14)
+plt.xlabel('Número de Clusters ($K$)', fontsize=12)
+plt.ylabel('Inercia (WCSS)', fontsize=12)
+plt.xticks(rango_k)
+plt.axvline(x=4, color='gray', linestyle='--', label='K óptimo = 4')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
+```
+
+> **Interpretación:** En la gráfica, el "codo" se forma en $K=4$, lo que indica que agregar más clusters después de ese punto no mejora significativamente la compactación.
 
 
 ## 4 Limitaciones y Sensibilidad
