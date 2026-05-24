@@ -478,7 +478,7 @@ Figure&nbsp;2: Comparación visual del comportamiento ante outliers agresivos. L
 <h4 class="anchored" data-anchor-id="preprocesamiento-normalización-de-variables">Preprocesamiento: Normalización de Variables</h4>
 <p>Antes de aplicar K-Means se normalizan las variables con <strong>escalamiento estándar (z-score)</strong>, ya que las unidades son heterogéneas (pesos vs.&nbsp;frecuencias vs.&nbsp;meses):</p>
 <p><span class="math display">\[z_i = \frac{x_i - \mu}{\sigma}\]</span></p>
-<div id="f7b81e1e" class="cell" data-execution_count="3">
+<div id="8bf9a416" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
@@ -531,7 +531,7 @@ max         156183.0               12.0           1212.0              59.0</code
 </section>
 <section id="selección-de-k-método-del-codo" class="level4">
 <h4 class="anchored" data-anchor-id="selección-de-k-método-del-codo">Selección de K: Método del Codo</h4>
-<div id="b169d097" class="cell" data-execution_count="4">
+<div id="c026d3b7" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>inercias <span class="op">=</span> []</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>K_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -564,7 +564,7 @@ max         156183.0               12.0           1212.0              59.0</code
 </section>
 <section id="modelo-final-con-k-3" class="level4">
 <h4 class="anchored" data-anchor-id="modelo-final-con-k-3">Modelo Final con K = 3</h4>
-<div id="329a0754" class="cell" data-execution_count="5">
+<div id="de35b1e6" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"cluster"</span>] <span class="op">=</span> kmeans.fit_predict(X)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -590,7 +590,7 @@ perfil
 🟢 Cliente Premium         110347.0                8.0            920.0</code></pre>
 </div>
 </div>
-<div id="bc40e147" class="cell" data-execution_count="6">
+<div id="91e4fbb9" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualización: Ingreso Anual vs Ticket Promedio</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>colores <span class="op">=</span> {</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"🔴 Cliente Básico"</span>:    <span class="st">"#E74C3C"</span>,</span>
@@ -798,7 +798,7 @@ perfil
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/alankevinct\.github\.io\/Presentaci-n-Particionamiento-K-Means\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

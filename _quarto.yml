@@ -4,6 +4,7 @@ project:
 
 website:
   title: "Particionamiento K-Means"
+  site-url: "https://alankevinct.github.io/Presentaci-n-Particionamiento-K-Means/"
   navbar:
     left:
       - href: index.qmd
