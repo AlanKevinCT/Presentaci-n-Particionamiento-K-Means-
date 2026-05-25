@@ -1,7 +1,9 @@
 ---
 title: "Fundamentos de K-Means"
 subtitle: "Equipo 1 - Análisis y Minería de Datos"
-author: "Alan Kevin Cano Tenorio, Maximiliano Lechuga Hervert, Integrante 3, Oscar Vazquez Rincon, Gomez Calva Carlos Manuel"
+author: 
+    - "Alan Kevin Cano Tenorio, Maximiliano Lechuga Hervert" 
+    - "Gomez Calva Carlos Manuel, Oscar Vazquez Rincon"
 date: last-modified
 ---
 
@@ -66,157 +68,47 @@ Para resolverlo en la práctica, K-Means no busca la solución perfecta de inmed
 
 
 ## 3. Diagramas de Funcionamiento
+## 3. Diagramas de Funcionamiento
+
+Para visualizar la ejecución de la heurística matemática descrita en la sección anterior, el siguiente flujograma representa el ciclo de decisiones lógicas que toma el algoritmo K-Means hasta alcanzar la convergencia:
+
+```{mermaid}
+graph TD
+  A[Inicio: Datos no etiquetados e hiperparámetro K] --> B[Paso 1: Inicializar K centroides]
+  B --> C[Paso 2: Asignar cada observación al centroide más cercano]
+  C --> D[Paso 3: Recalcular la posición de los centroides con la media]
+  D --> E{¿Los centroides se movieron?}
+  E -- Sí: Aún hay cambios de inercia --> C
+  E -- No: Convergencia alcanzada --> F[Fin: Clusters estables]
+
+El algoritmo **K-Means** sigue un proceso iterativo compuesto por tres etapas principales:
+
+#### 1. Inicialización
+- Se elige el número de clusters $K$ de forma previa.
+- Se colocan $K$ centroides de manera **aleatoria** dentro del espacio de los datos (o usando métodos como *K-Means++* para mayor estabilidad).
+
+#### 2. Asignación
+- Cada punto del dataset se asigna al centroide **más cercano**.
+- La distancia se mide generalmente con la distancia **Euclidiana**:
+
+$$d(x, \mu_k) = \sqrt{\sum_{j=1}^{p}(x_j - \mu_{kj})^2}$$
+
+- Donde $x$ es un punto, $\mu_k$ es el centroide del cluster $k$, y $p$ es el número de dimensiones.
+
+#### 3. Actualización
+- Una vez asignados todos los puntos, se **recalcula** la posición de cada centroide como el promedio de todos los puntos que pertenecen a ese cluster:
+
+$$\mu_k = \frac{1}{|C_k|} \sum_{x_i \in C_k} x_i$$
+
+#### 4. Convergencia
+- Los pasos 2 y 3 se repiten hasta que:
+  - Los centroides **ya no cambian** de posición, o
+  - Se alcanza un número **máximo de iteraciones**.
 
 > **Resumen del flujo:**
 >
 > `Inicio` → `Elegir K` → `Inicializar centroides` → `Asignar puntos` → `Actualizar centroides` →
 > ¿Convergió? → **No:** volver a asignar | **Sí:** `Fin`
-
-```{python}
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.datasets import make_blobs
-from sklearn.cluster import KMeans
-import matplotlib.animation as animation
-
-# Generar datos de ejemplo
-np.random.seed(42)
-n_samples = 300
-n_clusters = 4
-X, y_true = make_blobs(n_samples=n_samples, centers=n_clusters, 
-                       cluster_std=0.60, random_state=42)
-
-# Configurar K-means para mostrar el progreso
-class VisualKMeans:
-    def __init__(self, n_clusters=4, max_iter=10):
-        self.n_clusters = n_clusters
-        self.max_iter = max_iter
-        self.history = []  # Almacenar centroides en cada iteración
-        
-    def fit(self, X):
-        # Inicializar centroides aleatorios
-        np.random.seed(42)
-        indices = np.random.choice(len(X), self.n_clusters, replace=False)
-        centroids = X[indices].copy()
-        self.history.append(centroids.copy())
-        
-        for iteration in range(self.max_iter):
-            # Asignar clusters
-            distances = np.sqrt(((X - centroids[:, np.newaxis])**2).sum(axis=2))
-            labels = np.argmin(distances, axis=0)
-            
-            # Actualizar centroides
-            new_centroids = np.array([X[labels == k].mean(axis=0) if len(X[labels == k]) > 0 
-                                     else centroids[k] for k in range(self.n_clusters)])
-            
-            # Guardar en el historial
-            self.history.append(new_centroids.copy())
-            
-            # Verificar convergencia
-            if np.all(centroids == new_centroids):
-                break
-                
-            centroids = new_centroids
-        
-        return labels, centroids
-
-# Crear y entrenar el modelo visual
-visual_kmeans = VisualKMeans(n_clusters=4, max_iter=6)
-labels, final_centroids = visual_kmeans.fit(X)
-
-# Crear figura con subgráficos
-fig, axes = plt.subplots(2, 3, figsize=(15, 10))
-axes = axes.ravel()
-colors = ['red', 'blue', 'green', 'purple', 'orange', 'brown']
-
-# Mostrar iteraciones
-iterations_to_show = [0, 1, 2, 3, 4, 5]  # Mostrar 6 iteraciones
-
-for idx, iter_num in enumerate(iterations_to_show):
-    if iter_num < len(visual_kmeans.history):
-        ax = axes[idx]
-        centroids = visual_kmeans.history[iter_num]
-        
-        # Calcular asignaciones para esta iteración
-        distances = np.sqrt(((X - centroids[:, np.newaxis])**2).sum(axis=2))
-        labels_iter = np.argmin(distances, axis=0)
-        
-        # Graficar puntos por cluster
-        for k in range(visual_kmeans.n_clusters):
-            mask = labels_iter == k
-            ax.scatter(X[mask, 0], X[mask, 1], 
-                      c=colors[k], alpha=0.6, s=30, label=f'Cluster {k+1}')
-        
-        # Graficar centroides
-        ax.scatter(centroids[:, 0], centroids[:, 1], 
-                  c='black', marker='X', s=200, linewidth=2, 
-                  edgecolor='white', zorder=5)
-        
-        ax.set_title(f'Iteración {iter_num}', fontsize=14, fontweight='bold')
-        ax.set_xlabel('Característica 1')
-        ax.set_ylabel('Característica 2')
-        ax.grid(True, alpha=0.3)
-        
-        # Añadir información de centroides
-        if iter_num > 0:
-            ax.text(0.02, 0.98, f'Centroides actualizados', 
-                   transform=ax.transAxes, fontsize=9,
-                   verticalalignment='top', bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
-
-# Ocultar ejes no utilizados
-for idx in range(len(iterations_to_show), len(axes)):
-    axes[idx].axis('off')
-
-plt.suptitle('Evolución del Algoritmo K-means', fontsize=18, fontweight='bold', y=1.02)
-plt.tight_layout()
-plt.show()
-
-# Gráfico adicional: Comparación inicial vs final
-fig2, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-
-# Iteración inicial
-centroids_initial = visual_kmeans.history[0]
-distances_initial = np.sqrt(((X - centroids_initial[:, np.newaxis])**2).sum(axis=2))
-labels_initial = np.argmin(distances_initial, axis=0)
-
-for k in range(visual_kmeans.n_clusters):
-    mask = labels_initial == k
-    ax1.scatter(X[mask, 0], X[mask, 1], c=colors[k], alpha=0.6, s=30)
-ax1.scatter(centroids_initial[:, 0], centroids_initial[:, 1], 
-           c='black', marker='X', s=200, linewidth=2, edgecolor='white')
-ax1.set_title('Inicialización (Iteración 0)', fontsize=14, fontweight='bold')
-ax1.set_xlabel('Característica 1')
-ax1.set_ylabel('Característica 2')
-ax1.grid(True, alpha=0.3)
-
-# Iteración final
-for k in range(visual_kmeans.n_clusters):
-    mask = labels == k
-    ax2.scatter(X[mask, 0], X[mask, 1], c=colors[k], alpha=0.6, s=30)
-ax2.scatter(final_centroids[:, 0], final_centroids[:, 1], 
-           c='black', marker='X', s=200, linewidth=2, edgecolor='white')
-ax2.set_title(f'Resultado Final (Iteración {len(visual_kmeans.history)-1})', 
-             fontsize=14, fontweight='bold')
-ax2.set_xlabel('Característica 1')
-ax2.set_ylabel('Característica 2')
-ax2.grid(True, alpha=0.3)
-
-plt.suptitle('K-means: Inicialización vs Resultado Final', fontsize=16, fontweight='bold')
-plt.tight_layout()
-plt.show()
-
-# Mostrar información del progreso
-print("Progreso del algoritmo K-means:")
-print("-" * 40)
-for i in range(len(visual_kmeans.history)):
-    if i < len(visual_kmeans.history) - 1:
-        centroids_old = visual_kmeans.history[i]
-        centroids_new = visual_kmeans.history[i+1]
-        movimiento = np.sum(np.sqrt(((centroids_new - centroids_old)**2).sum(axis=1)))
-        print(f"Iteración {i}: Centroides se movieron {movimiento:.2f} unidades")
-    else:
-        print(f"Iteración {i}: Convergencia alcanzada")
-```
 
 ---
 

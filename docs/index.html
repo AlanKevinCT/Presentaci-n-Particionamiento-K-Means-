@@ -6,7 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Alan Kevin Cano Tenorio, Integrante 2, Integrante 3, Integrante 4">
+<meta name="author" content="Alan Kevin Cano Tenorio, Maximiliano Lechuga Hervert">
+<meta name="author" content="Gomez Calva Carlos Manuel, Oscar Vazquez Rincon">
 <meta name="dcterms.date" content="2026-05-24">
 
 <title>Fundamentos de K-Means – Particionamiento K-Means</title>
@@ -107,6 +108,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -184,6 +188,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#fórmulas-y-algoritmos-el-método-de-lloyd" id="toc-fórmulas-y-algoritmos-el-método-de-lloyd" class="nav-link" data-scroll-target="#fórmulas-y-algoritmos-el-método-de-lloyd">2. Fórmulas y Algoritmos: El Método de Lloyd</a></li>
   <li><a href="#diagramas-de-funcionamiento" id="toc-diagramas-de-funcionamiento" class="nav-link" data-scroll-target="#diagramas-de-funcionamiento">3. Diagramas de Funcionamiento</a></li>
+  <li><a href="#diagramas-de-funcionamiento-1" id="toc-diagramas-de-funcionamiento-1" class="nav-link" data-scroll-target="#diagramas-de-funcionamiento-1">3. Diagramas de Funcionamiento</a></li>
   <li><a href="#limitaciones-y-sensibilidad" id="toc-limitaciones-y-sensibilidad" class="nav-link" data-scroll-target="#limitaciones-y-sensibilidad">4 Limitaciones y Sensibilidad</a></li>
   <li><a href="#sensibilidad-a-outliers" id="toc-sensibilidad-a-outliers" class="nav-link" data-scroll-target="#sensibilidad-a-outliers">4.1 Sensibilidad a Outliers</a></li>
   <li><a href="#algunas-posibles-soluciones" id="toc-algunas-posibles-soluciones" class="nav-link" data-scroll-target="#algunas-posibles-soluciones">4.2 Algunas posibles soluciones</a></li>
@@ -210,9 +215,10 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
-             <p>Alan Kevin Cano Tenorio, Integrante 2, Integrante 3, Integrante 4 </p>
+             <p>Alan Kevin Cano Tenorio, Maximiliano Lechuga Hervert </p>
+             <p>Gomez Calva Carlos Manuel, Oscar Vazquez Rincon </p>
           </div>
   </div>
     
@@ -274,6 +280,112 @@ window.Quarto = {
 <section id="diagramas-de-funcionamiento" class="level2">
 <h2 class="anchored" data-anchor-id="diagramas-de-funcionamiento">3. Diagramas de Funcionamiento</h2>
 </section>
+<section id="diagramas-de-funcionamiento-1" class="level2">
+<h2 class="anchored" data-anchor-id="diagramas-de-funcionamiento-1">3. Diagramas de Funcionamiento</h2>
+<p>Para visualizar la ejecución de la heurística matemática descrita en la sección anterior, el siguiente flujograma representa el ciclo de decisiones lógicas que toma el algoritmo K-Means hasta alcanzar la convergencia:</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+  A[Inicio: Datos no etiquetados e hiperparámetro K] --&gt; B[Paso 1: Inicializar K centroides]
+  B --&gt; C[Paso 2: Asignar cada observación al centroide más cercano]
+  C --&gt; D[Paso 3: Recalcular la posición de los centroides con la media]
+  D --&gt; E{¿Los centroides se movieron?}
+  E -- Sí: Aún hay cambios de inercia --&gt; C
+  E -- No: Convergencia alcanzada --&gt; F[Fin: Clusters estables]
+
+El algoritmo **K-Means** sigue un proceso iterativo compuesto por tres etapas principales:
+
+#### 1. Inicialización
+- Se elige el número de clusters $K$ de forma previa.
+- Se colocan $K$ centroides de manera **aleatoria** dentro del espacio de los datos (o usando métodos como *K-Means++* para mayor estabilidad).
+
+#### 2. Asignación
+- Cada punto del dataset se asigna al centroide **más cercano**.
+- La distancia se mide generalmente con la distancia **Euclidiana**:
+
+$$d(x, \mu_k) = \sqrt{\sum_{j=1}^{p}(x_j - \mu_{kj})^2}$$
+
+- Donde $x$ es un punto, $\mu_k$ es el centroide del cluster $k$, y $p$ es el número de dimensiones.
+
+#### 3. Actualización
+- Una vez asignados todos los puntos, se **recalcula** la posición de cada centroide como el promedio de todos los puntos que pertenecen a ese cluster:
+
+$$\mu_k = \frac{1}{|C_k|} \sum_{x_i \in C_k} x_i$$
+
+#### 4. Convergencia
+- Los pasos 2 y 3 se repiten hasta que:
+  - Los centroides **ya no cambian** de posición, o
+  - Se alcanza un número **máximo de iteraciones**.
+
+&gt; **Resumen del flujo:**
+&gt;
+&gt; `Inicio` → `Elegir K` → `Inicializar centroides` → `Asignar puntos` → `Actualizar centroides` →
+&gt; ¿Convergió? → **No:** volver a asignar | **Sí:** `Fin`
+
+---
+
+### Método del Codo para elegir $K$ óptima
+
+El **Método del Codo** consiste en ejecutar K-Means para diferentes valores de $K$ y medir la **inercia** (también llamada WCSS: *Within-Cluster Sum of Squares*), que representa qué tan compactos son los clusters:
+
+$$\text{Inercia} = \sum_{k=1}^{K} \sum_{x_i \in C_k} ||x_i - \mu_k||^2$$
+
+A medida que $K$ aumenta, la inercia **siempre disminuye**. El punto óptimo es donde la reducción empieza a ser marginal, formando un **"codo"** en la gráfica.
+
+::: {#9bfbb312 .cell execution_count=1}
+``` {.python .cell-code}
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
+
+# --- Generar datos de ejemplo ---
+# Reemplaza esto con tu propio dataset: X = df[['col1', 'col2']].values
+X, _ = make_blobs(n_samples=300, centers=4, cluster_std=0.8, random_state=42)
+
+# --- Calcular inercia para distintos valores de K ---
+inercia = []
+rango_k = range(1, 11)  # Probar K de 1 a 10
+
+for k in rango_k:
+    modelo = KMeans(n_clusters=k, random_state=42, n_init=10)
+    modelo.fit(X)
+    inercia.append(modelo.inertia_)
+
+# --- Graficar el Método del Codo ---
+plt.figure(figsize=(8, 5))
+plt.plot(rango_k, inercia, marker='o', color='royalblue', linewidth=2,
+         markersize=8, markerfacecolor='tomato')
+plt.title('Método del Codo para elegir $K$ óptima', fontsize=14)
+plt.xlabel('Número de Clusters ($K$)', fontsize=12)
+plt.ylabel('Inercia (WCSS)', fontsize=12)
+plt.xticks(rango_k)
+plt.axvline(x=4, color='gray', linestyle='--', label='K óptimo = 4')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/cell-2-output-1.png" width="759" height="466" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<p>:::</p>
+<blockquote class="blockquote">
+<p><strong>Interpretación:</strong> En la gráfica, el “codo” se forma en <span class="math inline">\(K=4\)</span>, lo que indica que agregar más clusters después de ese punto no mejora significativamente la compactación.</p>
+</blockquote>
+</section>
 <section id="limitaciones-y-sensibilidad" class="level2">
 <h2 class="anchored" data-anchor-id="limitaciones-y-sensibilidad">4 Limitaciones y Sensibilidad</h2>
 <p>Se puede observar que K-Means es sumamente eficiente pero su principal debilidad radica en la función de costo que intenta optimizar: la inercia o suma de errores al cuadrado(SSE).</p>
@@ -282,7 +394,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="sensibilidad-a-outliers">4.1 Sensibilidad a Outliers</h2>
 <p>Matemáticamente, el centroide se actualiza en cada iteración calculando la media aritmética de sus puntos. Al utilizar la distancia euclidiana al cuadrado, el algoritmo penaliza severamente los puntos lejanos. Un solo dato atípico ejerce una atracción desproporcionada sobre el centroide.</p>
 <p><strong>Demostración Visual del Desplazamiento del Centroide:</strong></p>
-<div id="cell-fig-outliers" class="cell" data-execution_count="1">
+<div id="cell-fig-outliers" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -338,7 +450,7 @@ Figure&nbsp;1: Impacto de un solo Outlier en el cálculo del centroide
 <p>Como se explicó anteriormente, <strong>K-Means es un algoritmo de medias </strong>, lo que lo hace vulnerable, mientras que <strong>K-Medoids (PAM) es un algoritmo de puntos ancla reales</strong>, lo que lo hace robusto.</p>
 <p>A continuación, se presenta una comparación que evidencia cómo K-Means falla al intentar agrupar datos reales cuando hay ruido, mientras que nuestra implementación de K-Medoids ignora el ruido y detecta los patrones subyacentes reales.</p>
 <p><strong>Visualización Comparativa: Vulnerabilidad vs.&nbsp;Robustez</strong></p>
-<div id="cell-fig-comparacion-soluciones" class="cell" data-execution_count="2">
+<div id="cell-fig-comparacion-soluciones" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
@@ -478,7 +590,7 @@ Figure&nbsp;2: Comparación visual del comportamiento ante outliers agresivos. L
 <h4 class="anchored" data-anchor-id="preprocesamiento-normalización-de-variables">Preprocesamiento: Normalización de Variables</h4>
 <p>Antes de aplicar K-Means se normalizan las variables con <strong>escalamiento estándar (z-score)</strong>, ya que las unidades son heterogéneas (pesos vs.&nbsp;frecuencias vs.&nbsp;meses):</p>
 <p><span class="math display">\[z_i = \frac{x_i - \mu}{\sigma}\]</span></p>
-<div id="8bf9a416" class="cell" data-execution_count="3">
+<div id="cf9b75be" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
@@ -531,7 +643,7 @@ max         156183.0               12.0           1212.0              59.0</code
 </section>
 <section id="selección-de-k-método-del-codo" class="level4">
 <h4 class="anchored" data-anchor-id="selección-de-k-método-del-codo">Selección de K: Método del Codo</h4>
-<div id="c026d3b7" class="cell" data-execution_count="4">
+<div id="27ef8a23" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>inercias <span class="op">=</span> []</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>K_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -554,7 +666,7 @@ max         156183.0               12.0           1212.0              59.0</code
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-5-output-1.png" width="759" height="374" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-6-output-1.png" width="759" height="374" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -564,7 +676,7 @@ max         156183.0               12.0           1212.0              59.0</code
 </section>
 <section id="modelo-final-con-k-3" class="level4">
 <h4 class="anchored" data-anchor-id="modelo-final-con-k-3">Modelo Final con K = 3</h4>
-<div id="de35b1e6" class="cell" data-execution_count="5">
+<div id="9f155666" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_init<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"cluster"</span>] <span class="op">=</span> kmeans.fit_predict(X)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -590,7 +702,7 @@ perfil
 🟢 Cliente Premium         110347.0                8.0            920.0</code></pre>
 </div>
 </div>
-<div id="91e4fbb9" class="cell" data-execution_count="6">
+<div id="b77a77bb" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualización: Ingreso Anual vs Ticket Promedio</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>colores <span class="op">=</span> {</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"🔴 Cliente Básico"</span>:    <span class="st">"#E74C3C"</span>,</span>
@@ -620,7 +732,7 @@ perfil
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/cell-7-output-1.png" width="852" height="471" class="figure-img"></p>
+<p><img src="index_files/figure-html/cell-8-output-1.png" width="852" height="471" class="figure-img"></p>
 </figure>
 </div>
 </div>
